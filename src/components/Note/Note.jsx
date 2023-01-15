@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import $ from "jquery";
 import "jquery-ui-dist/jquery-ui";
 import "./Note.css";
-import RenderDisplay from "../RenderDisplay/RenderDisplay";
+import RenderDisplay from "../RenderNote/RenderNote";
 
 const Note = (props) => {
   const {

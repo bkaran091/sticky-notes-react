@@ -1,5 +1,5 @@
 import React from "react";
-import "./RenderDisplay.css";
+import "./RenderNote.css";
 
 const RenderDisplay = (props) => {
   const {
@@ -15,7 +15,7 @@ const RenderDisplay = (props) => {
   } = props;
 
   return (
-    <div ref={myNote} className="note"  style={style}>
+    <div ref={myNote} className="note" style={style}>
       <div>
         <textarea
           value={note}
