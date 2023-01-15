@@ -22,3 +22,9 @@ div.board {
   flex-wrap: wrap;
   z-index: 0;
 }
+
+.clear-board-icon {
+  position: fixed;
+  top: 70px;
+  right: 10px;
+}

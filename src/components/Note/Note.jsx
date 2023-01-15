@@ -15,6 +15,9 @@ const Note = (props) => {
     groups: existingGroups,
     addNotesToGroup,
     removeNotesFromAllGroups,
+    changeStyle,
+    zIndex,
+    setZIndex,
   } = props;
 
   const [note, setNote] = useState(children);
@@ -26,6 +29,11 @@ const Note = (props) => {
   const drag = (e, ui) => {
     let pos = $(myNote.current).position();
     setStyle({
+      ...style,
+      top: pos.top,
+      left: pos.left,
+    });
+    changeStyle(id, {
       ...style,
       top: pos.top,
       left: pos.left,
@@ -57,26 +65,10 @@ const Note = (props) => {
   };
 
   const start = (e, ui) => {
-    $(myNote.current).css("z-index", 1000);
-    //check if note is inside an existing group and remove it
-
+    $(myNote.current).css("z-index", zIndex);
+    setZIndex(zIndex + 1);
+    console.log(zIndex);
     removeNotesFromAllGroups(id);
-
-    // let groups = $(".group");
-    // let group = $(".group").filter(function () {
-    //   let pos = $(this).position();
-    //   let width = $(this).width();
-    //   let height = $(this).height();
-    //   return (
-    //     ui.position.left > pos.left &&
-    //     ui.position.left < pos.left + width &&
-    //     ui.position.top > pos.top &&
-    //     ui.position.top < pos.top + height
-    //   );
-    // });
-    // if (group.length > 0) {
-    //   $(group).remove(myNote.current);
-    // }
   };
 
   useEffect(() => {

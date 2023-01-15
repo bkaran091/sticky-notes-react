@@ -8,6 +8,7 @@ const Board = () => {
   const [notesArray, setNotesArray] = useState([]);
   const [groups, setGroups] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [zIndex, setZIndex] = useState(100);
 
   useEffect(() => {
     const notesArray = JSON.parse(localStorage.getItem("notesArray"));
@@ -104,6 +105,16 @@ const Board = () => {
     setNotesArray(arr);
   };
 
+  const changeStyle = (id, style) => {
+    let arr = [...notesArray];
+    arr.forEach((element) => {
+      if (element.id == id) {
+        element.style = style;
+      }
+    });
+    setNotesArray(arr);
+  };
+
   return (
     <div className="board">
       {notesArray.map((note, index) => {
@@ -116,9 +127,12 @@ const Board = () => {
             updateNote={updateNote}
             removeNote={removeNote}
             initialStyle={note.style}
+            changeStyle={changeStyle}
             groups={groups}
             addNotesToGroup={addNotesToGroup}
             removeNotesFromAllGroups={removeNotesFromAllGroups}
+            zIndex={zIndex}
+            setZIndex={setZIndex}
           >
             {note.text}
           </Note>
@@ -138,6 +152,18 @@ const Board = () => {
         onClick={() => addGroup("New Group 1!")}
       >
         Add Group
+      </button>
+      <button
+        className="clear-board-icon"
+        onClick={() => {
+          //clear local storage
+          localStorage.clear();
+          //clear state
+          setNotesArray([]);
+          setGroups([]);
+        }}
+      >
+        Clear Board
       </button>
     </div>
   );
