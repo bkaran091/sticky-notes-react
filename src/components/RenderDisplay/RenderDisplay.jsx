@@ -1,11 +1,19 @@
 import React from "react";
 
 const RenderDisplay = (props) => {
-  const { myNote, style, children, edit, remove } = props;
+  const { myNote, style, children, edit, remove, note, setNote, save } = props;
 
   return (
     <div ref={myNote} className="note" style={style}>
-      <p style={{ paddingBottom: 40 }}>{children}</p>
+      <input
+        value={note}
+        onChange={(e) => {
+          setNote(e.target.value);
+        }}
+        className="form-control"
+      />
+      <div style={{ height: 80 }}></div>
+
       <span>
         <button
           onClick={() => edit()}

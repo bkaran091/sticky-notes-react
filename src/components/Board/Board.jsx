@@ -25,7 +25,6 @@ const Board = () => {
       style: {
         right: randomBetween(0, window.innerWidth / 2 - 150) + "px",
         top: randomBetween(0, window.innerHeight - 150) + "px",
-        transform: "rotate( " + randomBetween(-15, 15) + "deg)",
       },
     });
     setNotesArray(arr);
@@ -65,6 +64,7 @@ const Board = () => {
             updateNote={updateNote}
             removeNote={removeNote}
             initialStyle={note.style}
+            groups={groups}
           >
             {note.text}
           </Note>

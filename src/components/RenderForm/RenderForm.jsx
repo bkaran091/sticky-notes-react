@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./RenderForm.css";
 const RenderForm = (props) => {
   const { myNote, style, setNote, note, save } = props;
   return (
