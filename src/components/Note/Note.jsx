@@ -97,10 +97,6 @@ const Note = (props) => {
     setEditing(false);
   };
 
-  useEffect(() => {
-    save();
-  }, [note]);
-
   return (
     <RenderDisplay
       myNote={myNote}
@@ -110,6 +106,8 @@ const Note = (props) => {
       remove={remove}
       setNote={setNote}
       note={note}
+      editing={editing}
+      save={save}
     />
   );
 };

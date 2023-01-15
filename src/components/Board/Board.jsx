@@ -17,6 +17,8 @@ const Board = () => {
     return min + Math.ceil(Math.random() * max);
   };
 
+  const colors = ["#fdc5f5", "#f7aef8", "#b388eb", "#8093f1", "#72ddf7"];
+
   const addNote = (text) => {
     let arr = [...notesArray];
     arr.push({
@@ -25,13 +27,11 @@ const Board = () => {
       style: {
         right: randomBetween(0, window.innerWidth / 2 - 150) + "px",
         top: randomBetween(0, window.innerHeight - 150) + "px",
-        transform: "rotate( " + randomBetween(-15, 15) + "deg)",
+        backgroundColor: colors[Math.floor(Math.random() * colors.length)],
       },
     });
     setNotesArray(arr);
   };
-
-  console.log("notesArray", notesArray);
 
   const updateNote = (id, text) => {
     console.log("updateNote", id, text);
@@ -78,13 +78,13 @@ const Board = () => {
       </div>
 
       <button className="add-note-icon" onClick={() => addNote("New Note!")}>
-        +
+        Add Note
       </button>
       <button
         className="add-group-icon"
         onClick={() => addGroup("New Group 1!")}
       >
-        ++
+        Add Group
       </button>
     </div>
   );

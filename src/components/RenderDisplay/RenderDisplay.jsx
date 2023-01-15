@@ -1,34 +1,43 @@
 import React from "react";
+import "./RenderDisplay.css";
 
 const RenderDisplay = (props) => {
-  const { myNote, style, children, edit, remove, note, setNote, save } = props;
+  const {
+    myNote,
+    style,
+    children,
+    edit,
+    remove,
+    note,
+    setNote,
+    save,
+    editing,
+  } = props;
 
   return (
     <div ref={myNote} className="note" style={style}>
-      <input
-        value={note}
-        onChange={(e) => {
-          setNote(e.target.value);
-        }}
-        className="form-control"
-      />
-      <div style={{ height: 80 }}></div>
+      <div>
+        <textarea
+          value={note}
+          disabled={!editing}
+          onChange={(e) => {
+            setNote(e.target.value);
+          }}
+          className="form-control"
+        />
+        <div style={{ height: 80 }}></div>
+        {editing ? (
+          <span>
+            <button onClick={() => save()}>save</button>
+          </span>
+        ) : (
+          <span>
+            <button onClick={() => edit()}>edit</button>
 
-      <span>
-        <button
-          onClick={() => edit()}
-          className="btn btn-primary glyphicon glyphicon-pencil"
-        >
-          edit
-        </button>
-
-        <button
-          onClick={() => remove()}
-          className="btn btn-danger glyphicon glyphicon-trash"
-        >
-          delete
-        </button>
-      </span>
+            <button onClick={() => remove()}>delete</button>
+          </span>
+        )}
+      </div>
     </div>
   );
 };

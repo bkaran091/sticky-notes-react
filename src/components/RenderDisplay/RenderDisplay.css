@@ -1,6 +1,9 @@
 .form-control {
-  width: 140px;
-  background-color: transparent;
+  width: 130px;
+  height: 40px;
   border: none;
   overflow: auto;
+  resize: none;
+  margin: 2px;
+  font-size: 14px;
 }
