@@ -1,15 +1,65 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Group from "../Group/Group";
 import Note from "../Note/Note";
 import "./Board.css";
+import uuid from "react-uuid";
 
 const Board = () => {
   const [notesArray, setNotesArray] = useState([]);
   const [groups, setGroups] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const notesArray = JSON.parse(localStorage.getItem("notesArray"));
+    const groups = JSON.parse(localStorage.getItem("groups"));
+    debugger;
+    if (notesArray) {
+      setNotesArray(notesArray);
+    }
+    if (groups) {
+      setGroups(groups);
+    }
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    console.log(notesArray, groups);
+    if (!isLoading) {
+      localStorage.setItem("notesArray", JSON.stringify(notesArray));
+      localStorage.setItem("groups", JSON.stringify(groups));
+    }
+  }, [notesArray, groups]);
+
+  console.log("groups", groups);
+  console.log("notesArray", notesArray);
 
   const addGroup = (text) => {
     let arr = [...groups];
-    arr.push({ id: Math.random(), text: text });
+    arr.push({ id: uuid(), text: text, notesId: [] });
+    setGroups(arr);
+  };
+
+  const addNotesToGroup = (groupId, noteId) => {
+    let arr = [...groups];
+    arr.forEach((element) => {
+      console.log("element", element, groupId, noteId);
+      if (element.id == groupId) {
+        element.notesId.push(noteId);
+      }
+      console.log("element", element);
+    });
+    setGroups(arr);
+  };
+
+  const removeNotesFromAllGroups = (noteId) => {
+    let arr = [...groups];
+    arr.forEach((element) => {
+      element.notesId.forEach((note, index) => {
+        if (note == noteId) {
+          element.notesId.splice(index, 1);
+        }
+      });
+    });
     setGroups(arr);
   };
 
@@ -22,7 +72,7 @@ const Board = () => {
   const addNote = (text) => {
     let arr = [...notesArray];
     arr.push({
-      id: Math.random(),
+      id: uuid(),
       text: text,
       style: {
         right: randomBetween(0, window.innerWidth / 2 - 150) + "px",
@@ -60,12 +110,15 @@ const Board = () => {
         return (
           <Note
             index={note.id}
+            id={note.id}
             key={note.id}
             note={note}
             updateNote={updateNote}
             removeNote={removeNote}
             initialStyle={note.style}
             groups={groups}
+            addNotesToGroup={addNotesToGroup}
+            removeNotesFromAllGroups={removeNotesFromAllGroups}
           >
             {note.text}
           </Note>

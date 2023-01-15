@@ -7,11 +7,14 @@ import RenderDisplay from "../RenderDisplay/RenderDisplay";
 const Note = (props) => {
   const {
     index,
+    id,
     updateNote,
     removeNote,
     children,
     initialStyle,
     groups: existingGroups,
+    addNotesToGroup,
+    removeNotesFromAllGroups,
   } = props;
 
   const [note, setNote] = useState(children);
@@ -28,7 +31,6 @@ const Note = (props) => {
       left: pos.left,
     });
 
-    let groups = $(".group");
     let group = $(".group").filter(function () {
       let pos = $(this).position();
       let width = $(this).width();
@@ -40,7 +42,11 @@ const Note = (props) => {
         ui.position.top < pos.top + height
       );
     });
-    console.log(group);
+    if (group.length > 0) {
+      let groupId = group[0].id;
+      console.log(myNote.current, "f");
+      addNotesToGroup(groupId, id);
+    }
     // if (group.length > 0) {
     //   console.log(group);
     //   $(group).append(myNote.current);
@@ -54,21 +60,23 @@ const Note = (props) => {
     $(myNote.current).css("z-index", 1000);
     //check if note is inside an existing group and remove it
 
-    let groups = $(".group");
-    let group = $(".group").filter(function () {
-      let pos = $(this).position();
-      let width = $(this).width();
-      let height = $(this).height();
-      return (
-        ui.position.left > pos.left &&
-        ui.position.left < pos.left + width &&
-        ui.position.top > pos.top &&
-        ui.position.top < pos.top + height
-      );
-    });
-    if (group.length > 0) {
-      $(group).remove(myNote.current);
-    }
+    removeNotesFromAllGroups(id);
+
+    // let groups = $(".group");
+    // let group = $(".group").filter(function () {
+    //   let pos = $(this).position();
+    //   let width = $(this).width();
+    //   let height = $(this).height();
+    //   return (
+    //     ui.position.left > pos.left &&
+    //     ui.position.left < pos.left + width &&
+    //     ui.position.top > pos.top &&
+    //     ui.position.top < pos.top + height
+    //   );
+    // });
+    // if (group.length > 0) {
+    //   $(group).remove(myNote.current);
+    // }
   };
 
   useEffect(() => {
