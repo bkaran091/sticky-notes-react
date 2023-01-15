@@ -13,7 +13,6 @@ const Board = () => {
   useEffect(() => {
     const notesArray = JSON.parse(localStorage.getItem("notesArray"));
     const groups = JSON.parse(localStorage.getItem("groups"));
-    debugger;
     if (notesArray) {
       setNotesArray(notesArray);
     }
@@ -31,12 +30,10 @@ const Board = () => {
     }
   }, [notesArray, groups]);
 
-  console.log("groups", groups);
-  console.log("notesArray", notesArray);
 
   const addGroup = (text) => {
     let arr = [...groups];
-    arr.push({ id: uuid(), text: text, notesId: [] });
+    arr.push({ id: uuid(), text: `Group ${arr.length + 1}`, notesId: [] });
     setGroups(arr);
   };
 
@@ -156,15 +153,23 @@ const Board = () => {
       <button
         className="clear-board-icon"
         onClick={() => {
-          //clear local storage
           localStorage.clear();
-          //clear state
           setNotesArray([]);
           setGroups([]);
         }}
       >
         Clear Board
       </button>
+      <div className="checkbox-container">
+        {groups.map((element, i) => {
+          return (
+            <div className="checkbox">
+              <input type="checkbox" id="checkbox" />
+              <label for="checkbox">{element.text}</label>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };

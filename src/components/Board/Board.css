@@ -28,3 +28,9 @@ div.board {
   top: 70px;
   right: 10px;
 }
+
+.checkbox-container {
+  position: fixed;
+  top: 100px;
+  right: 10px;
+}
