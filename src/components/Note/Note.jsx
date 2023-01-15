@@ -18,6 +18,7 @@ const Note = (props) => {
     changeStyle,
     zIndex,
     setZIndex,
+    changeGroupId,
   } = props;
 
   const [note, setNote] = useState(children);
@@ -52,22 +53,16 @@ const Note = (props) => {
     });
     if (group.length > 0) {
       let groupId = group[0].id;
-      console.log(myNote.current, "f");
       addNotesToGroup(groupId, id);
+      changeGroupId(id, groupId);
+    } else {
+      changeGroupId(id, "board");
     }
-    // if (group.length > 0) {
-    //   console.log(group);
-    //   $(group).append(myNote.current);
-    //   console.log("done");
-    // } else if (groups.has(myNote.current).length > 0) {
-    //   $(myNote.current).appendTo(".board");
-    // }
   };
 
   const start = (e, ui) => {
     $(myNote.current).css("z-index", zIndex);
     setZIndex(zIndex + 1);
-    console.log(zIndex);
     removeNotesFromAllGroups(id);
   };
 
@@ -92,7 +87,6 @@ const Note = (props) => {
   };
 
   const save = () => {
-    console.log(note);
     updateNote(index, note);
     setEditing(false);
   };

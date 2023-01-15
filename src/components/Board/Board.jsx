@@ -23,28 +23,29 @@ const Board = () => {
   }, []);
 
   useEffect(() => {
-    console.log(notesArray, groups);
     if (!isLoading) {
       localStorage.setItem("notesArray", JSON.stringify(notesArray));
       localStorage.setItem("groups", JSON.stringify(groups));
     }
   }, [notesArray, groups]);
 
-
   const addGroup = (text) => {
     let arr = [...groups];
-    arr.push({ id: uuid(), text: `Group ${arr.length + 1}`, notesId: [] });
+    arr.push({
+      id: uuid(),
+      text: `Group ${arr.length + 1}`,
+      notesId: [],
+      isChecked: true,
+    });
     setGroups(arr);
   };
 
   const addNotesToGroup = (groupId, noteId) => {
     let arr = [...groups];
     arr.forEach((element) => {
-      console.log("element", element, groupId, noteId);
       if (element.id == groupId) {
         element.notesId.push(noteId);
       }
-      console.log("element", element);
     });
     setGroups(arr);
   };
@@ -65,6 +66,16 @@ const Board = () => {
     return min + Math.ceil(Math.random() * max);
   };
 
+  const changeGroupId = (noteId, groupId) => {
+    let arr = [...notesArray];
+    arr.forEach((element) => {
+      if (element.id == noteId) {
+        element.groupId = groupId;
+      }
+    });
+    setNotesArray(arr);
+  };
+
   const colors = ["#fdc5f5", "#f7aef8", "#b388eb", "#8093f1", "#72ddf7"];
 
   const addNote = (text) => {
@@ -77,12 +88,12 @@ const Board = () => {
         top: randomBetween(0, window.innerHeight - 150) + "px",
         backgroundColor: colors[Math.floor(Math.random() * colors.length)],
       },
+      groupId: ["board"],
     });
     setNotesArray(arr);
   };
 
   const updateNote = (id, text) => {
-    console.log("updateNote", id, text);
     let arr = [...notesArray];
     arr.forEach((element) => {
       if (element.id === id) {
@@ -115,6 +126,17 @@ const Board = () => {
   return (
     <div className="board">
       {notesArray.map((note, index) => {
+        //check if note.groupId is checked in groups
+        let isNoteInGroup = false;
+        for (let i = 0; i < groups.length; i++) {
+          if (groups[i].id == note.groupId && groups[i].isChecked) {
+            isNoteInGroup = true;
+            break;
+          }
+        }
+        if (!isNoteInGroup && note.groupId != "board") {
+          return null;
+        }
         return (
           <Note
             index={note.id}
@@ -130,6 +152,7 @@ const Board = () => {
             removeNotesFromAllGroups={removeNotesFromAllGroups}
             zIndex={zIndex}
             setZIndex={setZIndex}
+            changeGroupId={changeGroupId}
           >
             {note.text}
           </Note>
@@ -164,7 +187,16 @@ const Board = () => {
         {groups.map((element, i) => {
           return (
             <div className="checkbox">
-              <input type="checkbox" id="checkbox" />
+              <input
+                type="checkbox"
+                id="checkbox"
+                defaultChecked={element.isChecked}
+                onChange={(e) => {
+                  let arr = [...groups];
+                  arr[i].isChecked = e.target.checked;
+                  setGroups(arr);
+                }}
+              />
               <label for="checkbox">{element.text}</label>
             </div>
           );
